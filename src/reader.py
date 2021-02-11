@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import os.path
 import string
 import math
 import nltk
@@ -19,7 +18,6 @@ class DSReader(object):
         return data_frame_csv
 
     def remove_digits(self):
-        #self.dataset = DSReader.load_dataset(self.patch)
 
         def no_digits(inp_str):
             inp_str = str(inp_str)
@@ -39,7 +37,6 @@ class DSReader(object):
         return self.dataset
 
     def remove_punctuation_marks(self):
-        # self.dataset = DSReader.load_dataset(self.patch)
 
         def no_punctuation(inp_str):
             inp_str = str(inp_str)
@@ -55,7 +52,6 @@ class DSReader(object):
         return self.dataset
 
     def remove_stopwords(self):
-        # self.dataset = DSReader.load_dataset(self.patch)
         stop_words = tuple(nltk.corpus.stopwords.words('english'))
 
         def no_stopwords(inp_str):
@@ -64,8 +60,9 @@ class DSReader(object):
             words = (new_list_str.lower()).split()
 
             without_stop_words = [word.lower() for word in words
-                                  if not word in stop_words]
-            without_short_words = [x for x in without_stop_words if len(x) > 2]
+                                  if word not in stop_words]
+            without_short_words = [x for x in without_stop_words
+                                   if len(x) > 2]
             new_str = ' '.join(without_short_words)
             return new_str
 
@@ -102,7 +99,6 @@ class DSReader(object):
 
     @staticmethod
     def split_train_and_test(list_email, list_label):
-
         train_count = math.floor(list_email.size * 0.75)
 
         train_labels = np.array(list_label[:train_count])
@@ -112,35 +108,3 @@ class DSReader(object):
         test_emails = np.array(list_email[train_count:])
 
         return train_emails, train_labels, test_emails, test_labels
-
-# 'D:/MyProject/ds-novice-master/tests/datasets/my_test_dataset.csv'
-# 'C:/Users/Masquerade/Downloads/emails.csv'
-
-
-my_data_test = os.path.abspath('tests/datasets/my_test_dataset.csv')
-
-a = DSReader('C:/Users/Masquerade/Downloads/emails.csv')
-
-a.remove_digits()
-a.to_lower()
-a.remove_punctuation_marks()
-a.remove_stopwords()
-a.remove_duplicates()
-
-
-print(a.dataset)
-
-
-# list_email, list_label = a.vectorize()
-# train_emails, train_labels, test_emails, test_labels = a.split_train_and_test(list_email, list_label)
-
-# print(test_emails)
-# print(test_labels)
-
-#print(a.make_dictionary())
-
-#list_email, list_label = a.vectorize()
-#train_emails, train_labels, test_emails, test_labels = a.split_train_and_test(list_email, list_label)
-
-#print('\n', test_emails)
-#print(test_labels)
