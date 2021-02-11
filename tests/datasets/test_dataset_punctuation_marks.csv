@@ -1,0 +1,4 @@
+email,label
+"This email contain punctuation marks!!!",1
+"!@#$$%>>?<,,." ,1
+"This email without punctuation marks" ,0
