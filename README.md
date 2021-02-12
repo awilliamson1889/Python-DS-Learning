@@ -20,3 +20,7 @@ py -m pip install -r requirements.txt
 python -m unittest tests/test_np.py
 python -m unittest tests/test_pd.py
 ```
+## Run pylint
+```bash
+pylint src\reader.py
+```
