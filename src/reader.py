@@ -1,11 +1,24 @@
-import pandas as pd
-import numpy as np
 import string
 import math
+import pandas as pd
+import numpy as np
 import nltk
 
 
-class DSReader(object):
+class DSReader:
+    """
+    This class is used to clean up a data set.
+    Class methods:
+    - load_dataset
+    - remove_digits
+    - to_lower
+    - remove_punctuation_marks
+    - remove_stopwords
+    - remove_duplicates
+    - make_dictionary
+    - vectorize
+    - split_train_and_test
+    """
 
     def __init__(self, patch):
         self.patch = patch
@@ -14,10 +27,19 @@ class DSReader(object):
 
     @staticmethod
     def load_dataset(path):
+        """
+
+        :param path:
+        :return:
+        """
         data_frame_csv = pd.read_csv(path)
         return data_frame_csv
 
     def remove_digits(self):
+        """
+
+        :return:
+        """
 
         def no_digits(inp_str):
             inp_str = str(inp_str)
@@ -33,10 +55,19 @@ class DSReader(object):
         return self.dataset
 
     def to_lower(self):
+        """
+
+        :return:
+        """
+
         self.dataset['email'] = self.dataset['email'].str.lower()
         return self.dataset
 
     def remove_punctuation_marks(self):
+        """
+
+        :return:
+        """
 
         def no_punctuation(inp_str):
             inp_str = str(inp_str)
@@ -52,6 +83,11 @@ class DSReader(object):
         return self.dataset
 
     def remove_stopwords(self):
+        """
+
+        :return:
+        """
+
         stop_words = tuple(nltk.corpus.stopwords.words('english'))
 
         def no_stopwords(inp_str):
@@ -70,10 +106,20 @@ class DSReader(object):
         return self.dataset
 
     def remove_duplicates(self):
+        """
+
+        :return:
+        """
+
         self.dataset = pd.DataFrame.drop_duplicates(self.dataset)
         return self.dataset
 
     def make_dictionary(self):
+        """
+
+        :return:
+        """
+
         email_index = self.dataset.index
 
         for i in email_index:
@@ -84,6 +130,11 @@ class DSReader(object):
         return self.dictionary
 
     def vectorize(self):
+        """
+
+        :return:
+        """
+
         email_index = self.dataset.index
         email_list = []
 
@@ -99,6 +150,12 @@ class DSReader(object):
 
     @staticmethod
     def split_train_and_test(list_email, list_label):
+        """
+
+        :param list_email:
+        :param list_label:
+        :return:
+        """
         train_count = math.floor(list_email.size * 0.75)
 
         train_labels = np.array(list_label[:train_count])
