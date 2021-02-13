@@ -6,18 +6,47 @@ import nltk
 
 
 class DSReader:
-    """
-    This class is used to clean up a data set.
-    Class methods:
-    - load_dataset
-    - remove_digits
-    - to_lower
-    - remove_punctuation_marks
-    - remove_stopwords
-    - remove_duplicates
-    - make_dictionary
-    - vectorize
-    - split_train_and_test
+    """The class DSReader is used to clean up the dataset and break the dataset down into test and training data.
+
+    The main use is to clean up the dataset from "trash"
+
+    Attributes
+    ----------
+    patch : str
+        full path to the dataset
+    dataset : DataFrame
+        dataset
+    dictionary : list[str]
+        list of all words in the dataset
+
+    Methods
+    -------
+    load_dataset(path)
+        reads a file with a set of data
+
+    remove_digits()
+        removes all digits from the data set
+
+    to_lower()
+        returns a dataset in lowercase
+
+    remove_punctuation_marks()
+        returns a data set without punctuation marks
+
+    remove_stopwords()
+        returns a data set without stopwords
+
+    remove_duplicates()
+        returns a set of data without duplicate data
+
+    make_dictionary()
+        returns a list consisting of all the words in the dataset
+
+    vectorize()
+        returns two lists: a list of email texts and a list of labels
+
+    split_train_and_test(list_email: list[str], list_label: list[int])
+        return tuple of train and test data
     """
 
     def __init__(self, patch):
@@ -27,11 +56,20 @@ class DSReader:
 
     @staticmethod
     def load_dataset(path):
+        """Method for loading a dataset
+
+        Parameters
+        ----------
+        path : str
+            full path to the dataset
+        """
 
         data_frame_csv = pd.read_csv(path)
         return data_frame_csv
 
     def remove_digits(self):
+        """Method for remove digits from a dataset
+        """
 
         def no_digits(inp_str):
             inp_str = str(inp_str)
@@ -47,11 +85,15 @@ class DSReader:
         return self.dataset
 
     def to_lower(self):
+        """Method for converting a dataset to lowercase
+        """
 
         self.dataset['email'] = self.dataset['email'].str.lower()
         return self.dataset
 
     def remove_punctuation_marks(self):
+        """Method for remove punctuation marks from a dataset
+        """
 
         def no_punctuation(inp_str):
             inp_str = str(inp_str)
@@ -67,6 +109,8 @@ class DSReader:
         return self.dataset
 
     def remove_stopwords(self):
+        """Method for remove stopwords from a dataset
+        """
 
         stop_words = tuple(nltk.corpus.stopwords.words('english'))
 
@@ -86,11 +130,15 @@ class DSReader:
         return self.dataset
 
     def remove_duplicates(self):
+        """Method for remove duplicates from a dataset
+        """
 
         self.dataset = pd.DataFrame.drop_duplicates(self.dataset)
         return self.dataset
 
     def make_dictionary(self):
+        """Method for creating a list of all words in a dataset
+        """
 
         email_index = self.dataset.index
 
@@ -102,6 +150,8 @@ class DSReader:
         return self.dictionary
 
     def vectorize(self):
+        """Method for creating lists of emails and labels
+        """
 
         email_index = self.dataset.index
         email_list = []
@@ -118,6 +168,15 @@ class DSReader:
 
     @staticmethod
     def split_train_and_test(list_email, list_label):
+        """Method for splitting data into training and test data
+
+        Parameters
+        ----------
+        list_email: list[str]
+            a list consisting of email texts
+        list_label: list[int]
+            a list consisting of email labels
+        """
 
         train_count = math.floor(list_email.size * 0.75)
 
