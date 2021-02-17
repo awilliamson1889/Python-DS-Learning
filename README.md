@@ -1,6 +1,6 @@
 
 ![Pandas-Test](https://github.com/awilliamson1889/Python-DS-Learning/workflows/Pandas-Test/badge.svg)
-
+![Pylint-Check](https://github.com/awilliamson1889/Python-DS-Learning/workflows/Pylint-Check/badge.svg)
 
 # Python-DS-Learning
  
