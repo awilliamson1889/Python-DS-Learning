@@ -5,6 +5,7 @@ import unittest
 
 from src.reader import DSReader
 
+nltk.download('punkt')
 
 try:
     nltk.find("stopwords")
