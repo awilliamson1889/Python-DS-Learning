@@ -1,3 +1,7 @@
+
+![Pandas-Test](https://github.com/awilliamson1889/Python-DS-Learning/workflows/Pandas-Test/badge.svg)
+
+
 # Python-DS-Learning
  
 Assume you already have Python and Miniconda installed, and your virtual environment activated.
