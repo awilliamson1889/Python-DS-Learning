@@ -1,3 +1,6 @@
+"""
+Module docstring
+"""
 import string
 import math
 import pandas as pd
@@ -6,8 +9,8 @@ import nltk
 
 
 class DSReader:
-    """The class DSReader is used to clean up the dataset and break the dataset down into test and training data.
-    The main use is to clean up the dataset from "trash"
+    """The class DSReader is used to clean up the dataset and break the dataset down
+    into test and training data. The main use is to clean up the dataset from "trash"
     Attributes
     ----------
     patch : str
@@ -141,16 +144,16 @@ class DSReader:
         """Method for creating lists of emails and labels
         """
 
-        email_index = self.dataset.index
-        email_list = []
+        # email_index = self.dataset.index
+        # email_list = []
 
-        for i in email_index:
-            inp_str = str(self.dataset['email'][i])
-            email_text = inp_str.split()
-            email_list.append(email_text)
+        # for i in email_index:
+        #    inp_str = str(self.dataset['email'][i])
+        #    email_text = inp_str.split()
+        #    email_list.append(email_text)
 
-        emails = np.array(email_list, dtype=object)
-        emails_labels = np.array(self.dataset['label'])
+        emails = pd.DataFrame(list([email] for email in self.dataset['email']))
+        emails_labels = pd.Series(self.dataset['label'])
 
         return emails, emails_labels
 
