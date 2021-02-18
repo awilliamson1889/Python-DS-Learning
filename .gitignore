@@ -123,11 +123,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-<<<<<<< Updated upstream
-.idea
-.idea/
-=======
-/.idea
-.idea
->>>>>>> Stashed changes
