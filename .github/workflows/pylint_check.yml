@@ -26,4 +26,4 @@ jobs:
           pip install pylint
       - name: Run pylint check
         run:
-          pylint src/*
+          pylint src/reader.py
