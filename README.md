@@ -1,3 +1,6 @@
+[![Pandas-Test](https://github.com/awilliamson1889/Python-DS-Learning/actions/workflows/pandas_test.yml/badge.svg)](https://github.com/awilliamson1889/Python-DS-Learning/actions/workflows/pandas_test.yml)
+[![Pylint-Check](https://github.com/awilliamson1889/Python-DS-Learning/actions/workflows/pylint_check.yml/badge.svg)](https://github.com/awilliamson1889/Python-DS-Learning/actions/workflows/pylint_check.yml)
+
 # Python-DS-Learning
  
 Assume you already have Python and Miniconda installed, and your virtual environment activated.
