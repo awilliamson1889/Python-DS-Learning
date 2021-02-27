@@ -202,7 +202,7 @@ class DSReader:
         list_label: list[int]
             a list consisting of email labels
         """
-        if (len(list_email) & len(list_label)) != 0 or percent > 0:
+        if (len(list_email) & len(list_label)) <= 0 or percent <= 0:
             raise Exception
 
         logging.info('Starting the split_train_and_test method!')
