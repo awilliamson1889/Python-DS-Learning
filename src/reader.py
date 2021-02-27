@@ -49,11 +49,11 @@ class DSReader:
     def __init__(self, patch):
         self.patch = patch
         self.dataset = DSReader.load_dataset(self.patch)
-        self.dictionary = 'Dictionary is empty. Use make_dictionary() method'
+        self.dictionary = []
 
-        logging.debug(f'INITIAL\npath: {self.patch},'
-                      f'\ndataset: {self.dataset},'
-                      f'\ndictionary: {self.dictionary}')
+        logging.debug('INITIAL\npath: %s,'
+                      '\ndataset: %s,'
+                      '\ndictionary: %s', self.patch, self.dataset, self.dictionary)
 
     @staticmethod
     def load_dataset(path):
@@ -65,12 +65,12 @@ class DSReader:
         """
 
         logging.info('Starting the load_dataset method')
-        logging.debug(f'INPUT DATA:\nDataset path: {path}')
+        logging.debug('INPUT DATA:\nDataset path: %s', path)
 
         data_frame_csv = pd.read_csv(path)
 
         logging.info('Dataset successful loaded!')
-        logging.debug(f'Dataset:\n{data_frame_csv} ')
+        logging.debug('Dataset:\n%s', data_frame_csv)
         return data_frame_csv
 
     def remove_digits(self):
@@ -91,7 +91,7 @@ class DSReader:
         self.dataset['email'] = self.dataset['email'].map(no_digits)
 
         logging.info('Digits successful removed from dataset!')
-        logging.debug(f'Dataset:\n{self.dataset} ')
+        logging.debug('Dataset:\n%s', self.dataset)
         return self.dataset
 
     def to_lower(self):
@@ -102,7 +102,7 @@ class DSReader:
         self.dataset['email'] = self.dataset['email'].str.lower()
 
         logging.info('The dataset is successfully converted to lowercase!')
-        logging.debug(f'Dataset:\n{self.dataset} ')
+        logging.debug('Dataset:\n%s', self.dataset)
         return self.dataset
 
     def remove_punctuation_marks(self):
@@ -125,7 +125,7 @@ class DSReader:
         self.dataset['email'] = self.dataset['email'].map(no_punctuation)
 
         logging.info('Punctuation marks successful removed from dataset!')
-        logging.debug(f'Dataset:\n{self.dataset} ')
+        logging.debug('Dataset:\n%s', self.dataset)
         return self.dataset
 
     def remove_stopwords(self):
@@ -150,7 +150,7 @@ class DSReader:
         self.dataset['email'] = self.dataset['email'].map(no_stopwords)
 
         logging.info('Stopwords successful removed from dataset!')
-        logging.debug(f'Dataset:\n{self.dataset} ')
+        logging.debug('Dataset:\n%s', self.dataset)
         return self.dataset
 
     def remove_duplicates(self):
@@ -160,7 +160,7 @@ class DSReader:
         self.dataset = pd.DataFrame.drop_duplicates(self.dataset)
 
         logging.info('Duplicates successful removed from dataset!')
-        logging.debug(f'Dataset:\n{self.dataset} ')
+        logging.debug('Dataset:\n%s', self.dataset)
         return self.dataset
 
     def make_dictionary(self):
@@ -193,7 +193,7 @@ class DSReader:
         return emails, emails_labels
 
     @staticmethod
-    def split_train_and_test(list_email, list_label):
+    def split_train_and_test(list_email, list_label, percent = 0.7):
         """Method for splitting data into training and test data
         Parameters
         ----------
@@ -202,10 +202,12 @@ class DSReader:
         list_label: list[int]
             a list consisting of email labels
         """
+        if (len(list_email) & len(list_label)) != 0 or percent > 0:
+            raise Exception
 
         logging.info('Starting the split_train_and_test method!')
 
-        train_count = math.floor(list_email.size * 0.75)
+        train_count = math.floor(list_email.size * percent)
 
         train_labels = list_label[:train_count]
         test_labels = list_label[train_count:]
