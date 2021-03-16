@@ -28,3 +28,7 @@ python -m unittest tests/test_pd.py
 ```bash
 pylint src\reader.py
 ```
+## Run fit & predict process 
+```bash
+python email-classifier.py
+```
