@@ -13,10 +13,10 @@ def data_set_cleaning(obj):
     obj.remove_duplicates()
     obj.remove_stopwords()
 
-url = "https://raw.githubusercontent.com/awilliamson1889/Python-DS-Learning/email-clf-model/tests/datasets/emails.csv"
+url = "raw.githubusercontent.com/awilliamson1889/Python-DS-Learning/email-clf-model/tests/datasets/emails.csv"
+dataset_path = os.path.abspath("./tests/datasets/emails.csv")
 
 try:
-    dataset_path = os.path.abspath("./tests/datasets/emails.csv")
     print(dataset_path)
     emails_data = DSReader(dataset_path)
 except FileNotFoundError:
