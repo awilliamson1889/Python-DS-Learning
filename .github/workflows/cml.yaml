@@ -1,0 +1,23 @@
+name: mlops
+on: [push]
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+     - name: Set up Python ${{ matrix.python-version }}
+       uses: actions/setup-python@v2
+       with:
+        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v2
+      - name: 'Train my model'
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+        
+          # Your ML workflow goes here
+          pip install -r requirements.txt
+          python train.py
