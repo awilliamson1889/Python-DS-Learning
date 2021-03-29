@@ -18,4 +18,6 @@ jobs:
           sudo -H pip install virtualenv
           # Your ML workflow goes here
           pip install -r requirements.txt
+          pip install nltk
+          nltk.download('stopwords')
           python train.py
