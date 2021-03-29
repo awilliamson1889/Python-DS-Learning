@@ -3,9 +3,14 @@ on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
     container: docker://dvcorg/cml-py3:latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: 'Train my model'
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
