@@ -75,8 +75,8 @@ for title, normalize, classifier in titles_options:
     precision = TP / (TP + FP)
     f_measure = 2 * recall * precision / (precision + recall)
 
-    plt.show()
+    plt.savefig('model_confusion_matrix.png', dpi=120)
 
 with open('metrics.txt', 'w') as outfile:
-    outfile.write(f'Matrix:\n{matrix}\nRecall = {recall}\nPrecision = {precision}\nF-measure = {f_measure}')
+    outfile.write(f'Recall = {recall}\nPrecision = {precision}\nF-measure = {f_measure}')
 
