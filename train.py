@@ -1,4 +1,5 @@
 import os
+import nltk
 import matplotlib.pyplot as plt
 from src.reader import DSReader
 from sklearn.pipeline import Pipeline
@@ -7,6 +8,13 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
+nltk.download('punkt')
+
+try:
+    nltk.find("stopwords")
+except LookupError:
+    nltk.download("stopwords")
+    
 
 def data_set_cleaning(obj):
     obj.to_lower()
