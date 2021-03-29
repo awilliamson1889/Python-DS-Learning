@@ -17,7 +17,6 @@ url = "raw.githubusercontent.com/awilliamson1889/Python-DS-Learning/email-clf-mo
 dataset_path = os.path.abspath("./tests/datasets/emails.csv")
 
 try:
-    print(dataset_path)
     emails_data = DSReader(dataset_path)
 except FileNotFoundError:
     print("Dataset not found.\nDownloading dataset from: ", url)
