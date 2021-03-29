@@ -20,3 +20,8 @@ jobs:
           pip install -r requirements.txt
           pip install nltk
           python train.py
+          
+          echo "##Model Metrics" > report.md
+          cat metrics.txt >> report.md
+          
+          cml-send-comment report.md
