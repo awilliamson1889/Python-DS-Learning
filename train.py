@@ -14,7 +14,7 @@ try:
     nltk.find("stopwords")
 except LookupError:
     nltk.download("stopwords")
-    
+
 
 def data_set_cleaning(obj):
     obj.to_lower()
@@ -76,3 +76,7 @@ for title, normalize, classifier in titles_options:
     f_measure = 2 * recall * precision / (precision + recall)
 
     plt.show()
+
+with open('metrics.txt', 'w') as outfile:
+    outfile.write(f'Matrix:\n{matrix}\nRecall = {recall}\nPrecision = {precision}\nF-measure = {f_measure}')
+
