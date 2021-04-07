@@ -5,6 +5,7 @@ from src.reader import DSReader
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import plot_confusion_matrix
+from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
@@ -38,8 +39,8 @@ except FileNotFoundError:
 data_set_cleaning(emails_data)
 data_set_cleaning(test_data)
 
-X_train, y_train = emails_data.vectorize()
-X_test, y_test = test_data.vectorize()
+X, y = emails_data.vectorize()
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=5)
 
 pipeline_SGDClassifier2 = Pipeline([('vect', CountVectorizer()),
                                     ('tfidf', TfidfTransformer()),
@@ -52,8 +53,8 @@ print('Fit process successful ending!')
 
 answers = pipeline_SGDClassifier2.predict(X_test.ravel())
 
-print(pipeline_SGDClassifier2.score(X_test.ravel(), y_test))
-
+model_score = pipeline_SGDClassifier2.score(X_test.ravel(), y_test)
+print('Model score:', model_score)
 
 class_names = ['not spam', 'spam']
 
@@ -80,3 +81,6 @@ for title, normalize, classifier in titles_options:
 with open('metrics.txt', 'w') as outfile:
     outfile.write(f'Recall = {recall}\nPrecision = {precision}\nF-measure = {f_measure}')
 
+if model_score < 0.90 or precision < 0.90 or recall < 0.85:
+    print('Model have bed scores!')
+    raise Exception
