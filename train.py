@@ -56,7 +56,7 @@ answers = pipeline_SGDClassifier2.predict(X_test.ravel())
 model_score = pipeline_SGDClassifier2.score(X_test.ravel(), y_test)
 print('Model score:', model_score)
 
-class_names = ['not spam', 'spam']
+class_names = ['spam', 'not spam']
 
 titles_options = [("Confusion matrix pipeline_SGDClassifier", None, pipeline_SGDClassifier2)]
 
