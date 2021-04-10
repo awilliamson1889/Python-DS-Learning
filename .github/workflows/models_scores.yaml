@@ -1,5 +1,5 @@
 name: models-scores
-on: [push]
+on: [pull_request]
 jobs:
   run:
     runs-on: [ubuntu-latest]
