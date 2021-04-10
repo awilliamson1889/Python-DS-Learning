@@ -2,9 +2,11 @@
 import logging
 import string
 import math
+import re
 import pandas as pd
-import numpy as np  # pylint: disable=W0611
 import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 
 
 class DSReader:
@@ -21,27 +23,38 @@ class DSReader:
     Methods
     -------
     load_dataset(path)
-        reads a file with a set of data
+        reads a file with a dataset
     remove_digits()
-        removes all digits from the data set
+        removes all digits from the dataset
     to_lower()
         returns a dataset in lowercase
     remove_punctuation_marks()
-        returns a data set without punctuation marks
+        returns a dataset without punctuation marks
     remove_stopwords()
-        returns a data set without stopwords
+        returns a dataset without stopwords
     remove_duplicates()
-        returns a set of data without duplicate data
+        returns a dataset without duplicate data
     make_dictionary()
         returns a list consisting of all the words in the dataset
     vectorize()
         returns two lists: a list of email texts and a list of labels
     split_train_and_test(list_email: list[str], list_label: list[int])
         return tuple of train and test data
+    no_stopwords()
+        return string without stopwords
+    no_punctuation()
+        return string without punctuation marks
+    no_digits()
+        return string without digits
+    dataset_cleaning()
+        Performs all methods of cleaning the dataset
+        return clean dataset
+    tokenize(text)
+        ???
     """
 
     LOG_FORMAT = "%(levelname)s %(asctime)s, %(funcName)s - %(message)s"
-    logging.basicConfig(filename='w.log',
+    logging.basicConfig(filename='logging_file.log',
                         level=logging.DEBUG,
                         format=LOG_FORMAT,
                         filemode='w')
@@ -54,6 +67,81 @@ class DSReader:
         logging.debug('INITIAL\npath: %s,'
                       '\ndataset: %s,'
                       '\ndictionary: %s', self.patch, self.dataset, self.dictionary)
+
+    @staticmethod
+    def dataset_cleaning(obj):
+        """Use all methods for cleaning the dataset"""
+        obj.to_lower()
+        obj.remove_digits()
+        obj.remove_punctuation_marks()
+        obj.remove_duplicates()
+        obj.remove_stopwords()
+
+    @staticmethod
+    def str_cleaning(inp_str):
+        """Use all methods for cleaning the input string"""
+        inp_str = inp_str.lower()
+        inp_str = DSReader.no_digits(inp_str)
+        inp_str = DSReader.no_punctuation(inp_str)
+        inp_str = DSReader.no_stopwords(inp_str)
+        return inp_str
+
+    @staticmethod
+    def tokenize(text):
+        """  ???  """
+        url_regex = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|' \
+                    r'[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+        detected_urls = re.findall(url_regex, text)
+        for url in detected_urls:
+            text = text.replace(url, "urlplaceholder")
+
+        tokens = word_tokenize(text)
+        lemmatizer = WordNetLemmatizer()
+
+        clean_tokens = []
+        for tok in tokens:
+            clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+            clean_tokens.append(clean_tok)
+
+        return clean_tokens
+
+    @staticmethod
+    def no_stopwords(inp_str):
+        """Method for remove stopwords from a string"""
+        stop_words = tuple(nltk.corpus.stopwords.words('english'))
+        words = nltk.word_tokenize(str(inp_str))
+        new_list_str = ' '.join(words)
+        words = (new_list_str.lower()).split()
+
+        without_stop_words = [word.lower() for word in words
+                              if word not in stop_words]
+        without_short_words = [x for x in without_stop_words
+                               if len(x) > 2]
+        new_str = ' '.join(without_short_words)
+        return new_str
+
+    @staticmethod
+    def no_punctuation(inp_str):
+        """Method for remove punctuation marks from a string"""
+        punctuation_string = string.punctuation + '—–'
+        no_punctuation_str = ""
+        for char in str(inp_str):
+            if char not in punctuation_string and char in string.ascii_letters:
+                no_punctuation_str = no_punctuation_str + char
+            else:
+                no_punctuation_str = no_punctuation_str + ' '
+        return no_punctuation_str
+
+    @staticmethod
+    def no_digits(inp_str):
+        """Method for remove digits from a string"""
+        no_digits_str = ''
+        for char in str(inp_str):
+            if char not in string.digits and char in string.ascii_letters:
+                no_digits_str = no_digits_str + char
+            else:
+                no_digits_str = no_digits_str + ' '
+        return no_digits_str
 
     @staticmethod
     def load_dataset(path):
@@ -76,19 +164,9 @@ class DSReader:
     def remove_digits(self):
         """Method for remove digits from a dataset"""
 
-        def no_digits(inp_str):
-            inp_str = str(inp_str)
-            no_digits_str = ''
-            for char in inp_str:
-                if char not in string.digits and char in string.ascii_letters:
-                    no_digits_str = no_digits_str + char
-                else:
-                    no_digits_str = no_digits_str + ' '
-            return no_digits_str
-
         logging.info('Starting the remove_digits method')
 
-        self.dataset['email'] = self.dataset['email'].map(no_digits)
+        self.dataset['email'] = self.dataset['email'].map(DSReader.no_digits)
 
         logging.info('Digits successful removed from dataset!')
         logging.debug('Dataset:\n%s', self.dataset)
@@ -108,21 +186,9 @@ class DSReader:
     def remove_punctuation_marks(self):
         """Method for remove punctuation marks from a dataset"""
 
-        punctuation_string = string.punctuation + '—–'
-
-        def no_punctuation(inp_str):
-            inp_str = str(inp_str)
-            no_punctuation_str = ""
-            for char in inp_str:
-                if char not in punctuation_string and char in string.ascii_letters:
-                    no_punctuation_str = no_punctuation_str + char
-                else:
-                    no_punctuation_str = no_punctuation_str + ' '
-            return no_punctuation_str
-
         logging.info('Starting the remove_punctuation_marks method')
 
-        self.dataset['email'] = self.dataset['email'].map(no_punctuation)
+        self.dataset['email'] = self.dataset['email'].map(DSReader.no_punctuation)
 
         logging.info('Punctuation marks successful removed from dataset!')
         logging.debug('Dataset:\n%s', self.dataset)
@@ -131,23 +197,9 @@ class DSReader:
     def remove_stopwords(self):
         """Method for remove stopwords from a dataset"""
 
-        stop_words = tuple(nltk.corpus.stopwords.words('english'))
-
-        def no_stopwords(inp_str):
-            words = nltk.word_tokenize(str(inp_str))
-            new_list_str = ' '.join(words)
-            words = (new_list_str.lower()).split()
-
-            without_stop_words = [word.lower() for word in words
-                                  if word not in stop_words]
-            without_short_words = [x for x in without_stop_words
-                                   if len(x) > 2]
-            new_str = ' '.join(without_short_words)
-            return new_str
-
         logging.info('Starting the remove_stopwords method')
 
-        self.dataset['email'] = self.dataset['email'].map(no_stopwords)
+        self.dataset['email'] = self.dataset['email'].map(DSReader.no_stopwords)
 
         logging.info('Stopwords successful removed from dataset!')
         logging.debug('Dataset:\n%s', self.dataset)
@@ -177,7 +229,6 @@ class DSReader:
         self.dictionary = list(set(list_words))
 
         logging.info('Dictionary successful created!')
-
         return self.dictionary
 
     def vectorize(self):
@@ -189,11 +240,10 @@ class DSReader:
         emails_labels = pd.Series(self.dataset['label']).values
 
         logging.info('Dataset successful splitted(vectorize)!')
-
         return emails, emails_labels
 
     @staticmethod
-    def split_train_and_test(list_email, list_label, percent = 0.7):
+    def split_train_and_test(list_email, list_label, percent=0.7):
         """Method for splitting data into training and test data
         Parameters
         ----------
@@ -201,6 +251,8 @@ class DSReader:
             a list consisting of email texts
         list_label: list[int]
             a list consisting of email labels
+        percent: float
+            a percent of train data
         """
         if (len(list_email) & len(list_label)) <= 0 or percent <= 0:
             raise Exception

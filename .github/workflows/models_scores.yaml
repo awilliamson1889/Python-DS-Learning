@@ -21,7 +21,7 @@ jobs:
           pip install nltk
           python models_scores.py
           
-          echo "##Model Metrics" > report.md
-          cat html_str.txt >> report.md
+          echo "Models Metrics" > report.md
+          cat scores_table_html.txt >> report.md
           
           cml-send-comment report.md
