@@ -25,3 +25,4 @@ jobs:
           cat scores_table_html.txt >> report.md
           
           cml-send-comment report.md
+
