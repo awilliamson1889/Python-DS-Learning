@@ -8,6 +8,21 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
+try:
+    nltk.find("stopwords")
+except LookupError:
+    nltk.download("stopwords")
+
+try:
+    nltk.find("wordnet")
+except LookupError:
+    nltk.download("wordnet")
+
+try:
+    nltk.find("punkt")
+except LookupError:
+    nltk.download('punkt')
+
 
 class DSReader:
     """The class DSReader is used to clean up the dataset and break the dataset down
