@@ -127,3 +127,4 @@ dmypy.json
 
 # My ignore files
 scores_table_html.txt
+finalized_model.sav
