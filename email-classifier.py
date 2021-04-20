@@ -3,6 +3,7 @@ from src.reader import DSReader
 from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import CountVectorizer
+from joblib import dump
 
 
 url = "raw.githubusercontent.com/awilliamson1889/Python-DS-Learning/email-clf-model/tests/datasets/emails.csv"
@@ -25,11 +26,8 @@ pipeline = Pipeline([('vect', CountVectorizer(tokenizer=DSReader.tokenize)),
 
 pipeline.fit(X.ravel(), y)
 
+filename = 'finalized_model.sav'
+dump(pipeline, filename)
+
 print('Fit process successful ending!')
 
-email_text = input('Paste your email text:\n')
-while email_text != 'EXIT':
-    email_text = DSReader.str_cleaning(email_text)
-    predict = pipeline.predict([email_text])
-    print("\nI think this is SPAM" if predict == [1] else "I think this is NOT SPAM")
-    email_text = input('If you want exit please write: EXIT or write new email text and continue:\n')
