@@ -6,16 +6,14 @@ from sklearn.feature_extraction.text import CountVectorizer
 from joblib import dump
 
 
-url = "raw.githubusercontent.com/awilliamson1889/Python-DS-Learning/email-clf-model/tests/datasets/emails.csv"
 dataset_path = os.path.abspath("tests/datasets/emails.csv")
-
-print("Please wait model fitting.")
 
 try:
     emails_data = DSReader(dataset_path)
 except FileNotFoundError:
-    print("Dataset not found.\nDownloading dataset from: ", url)
-    emails_data = DSReader(url)
+    print("Dataset not found.")
+
+print("Please wait model fitting.")
 
 DSReader.dataset_cleaning(emails_data)
 
