@@ -31,7 +31,7 @@ try:
 except LookupError:
     nltk.download('punkt')
 
-dataset_path = os.path.abspath("../tests/datasets/emails.csv")
+dataset_path = os.path.abspath("tests/datasets/emails.csv")
 
 
 def load_data():
