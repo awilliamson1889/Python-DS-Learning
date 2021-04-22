@@ -19,7 +19,7 @@ jobs:
           # Your ML workflow goes here
           pip install -r requirements.txt
           pip install nltk
-          python models_scores.py
+          python src/models_scores.py
           
           echo "Models Metrics" > report.md
           cat scores_table_html.txt >> report.md

@@ -1,9 +1,9 @@
+"""evaluate models scores"""
+import sys
 import nltk
 import os
 import numpy as np
 import pandas as pd
-
-from src.reader import DSReader
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import confusion_matrix
 from sklearn.naive_bayes import MultinomialNB
@@ -12,6 +12,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from reader import DSReader
+
+sys.path.append("src")
 
 try:
     nltk.find("wordnet")
@@ -28,10 +31,11 @@ try:
 except LookupError:
     nltk.download('punkt')
 
-dataset_path = os.path.abspath("tests/datasets/emails.csv")
+dataset_path = os.path.abspath("../tests/datasets/emails.csv")
 
 
 def load_data():
+    """Method for data loading"""
     df = DSReader(dataset_path)
     DSReader.dataset_cleaning(df)
     X, y = df.vectorize()
@@ -39,6 +43,7 @@ def load_data():
 
 
 def display_results(y_test, y_pred):
+    """Method for display model score"""
     labels = np.unique(y_pred)
     confusion_mat = confusion_matrix(y_test, y_pred, labels=labels)
 
@@ -56,8 +61,10 @@ clf_list = {'RandomForestClassifier1 + tfidf': RandomForestClassifier(random_sta
             'MultinomialNB2 + tfidf': MultinomialNB(),
             'MultinomialNB3 - tokenizer': MultinomialNB(),
             'MultinomialNB4 + tfidf - tokenizer': MultinomialNB(),
-            'SGDClassifier1 + chi': SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3, random_state=1),
-            'SGDClassifier2 + tfidf': SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3, random_state=1)}
+            'SGDClassifier1 + chi': SGDClassifier(loss='hinge', penalty='l2',
+                                                  alpha=1e-3, random_state=1),
+            'SGDClassifier2 + tfidf': SGDClassifier(loss='hinge', penalty='l2',
+                                                    alpha=1e-3, random_state=1)}
 
 models_score = pd.DataFrame(columns=['model', 'accuracy', 'precision', 'recall', 'F1-score'],
                             index=range(1, len(clf_list)+1))

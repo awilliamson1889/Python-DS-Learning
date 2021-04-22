@@ -38,7 +38,7 @@ pylint src/reader.py
 ```
 ## Run fit process 
 ```bash
-python email-classifier.py
+python email_classifier.py
 ```
 
 ## Run predict process 
