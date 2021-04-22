@@ -1,4 +1,5 @@
 """This module does to work with dataset"""
+import os
 import logging
 import string
 import math
@@ -69,7 +70,7 @@ class DSReader:
     """
 
     LOG_FORMAT = "%(levelname)s %(asctime)s, %(funcName)s - %(message)s"
-    logging.basicConfig(filename='logging_file.log',
+    logging.basicConfig(filename=os.path.abspath('logs/logging_file.log'),
                         level=logging.DEBUG,
                         format=LOG_FORMAT,
                         filemode='w')

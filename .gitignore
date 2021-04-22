@@ -123,7 +123,3 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea
-
-# My ignore files
-scores_table_html.txt
-

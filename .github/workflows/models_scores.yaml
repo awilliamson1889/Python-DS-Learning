@@ -22,7 +22,7 @@ jobs:
           python src/models_scores.py
           
           echo "Models Metrics" > report.md
-          cat scores_table_html.txt >> report.md
+          cat logs/scores_table_html.txt >> report.md
           
           cml-send-comment report.md
 

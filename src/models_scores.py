@@ -133,5 +133,5 @@ models_score = models_score.sort_values(by=['F1-score', 'precision'], ascending=
 
 html_str = (models_score.to_html()).replace('\n', '')
 
-with open('scores_table_html.txt', 'w') as outfile:
+with open(os.path.abspath('logs/scores_table_html.txt'), 'w') as outfile:
     outfile.write(html_str)
