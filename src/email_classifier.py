@@ -10,7 +10,6 @@ from reader import DSReader
 
 sys.path.append('src')
 
-print(os.path.abspath(""))
 dataset_path = os.path.abspath("tests/datasets/emails.csv")
 
 try:
@@ -29,7 +28,7 @@ pipeline = Pipeline([('vect', CountVectorizer(tokenizer=DSReader.tokenize)),
 
 pipeline.fit(X.ravel(), y)
 
-file_name = 'finalized_model.sav'
+file_name = os.path.abspath('models/MultinomialNB_finalized_model.sav')
 dump(pipeline, file_name)
 
 print('Fit process successful ending!')

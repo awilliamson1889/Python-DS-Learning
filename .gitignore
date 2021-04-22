@@ -100,7 +100,6 @@ celerybeat-schedule
 # Environments
 .env
 .venv
-env/
 venv/
 ENV/
 env.bak/
@@ -127,4 +126,4 @@ dmypy.json
 
 # My ignore files
 scores_table_html.txt
-finalized_model.sav
+
