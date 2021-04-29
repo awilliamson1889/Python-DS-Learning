@@ -1,0 +1,28 @@
+name: models-scores
+on: [pull_request]
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        python-version: [3.8]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: 'Train my model'
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo -H pip install virtualenv
+          # Your ML workflow goes here
+          pip install -r requirements.txt
+          pip install nltk
+          python src/models_scores.py
+          
+          echo "Models Metrics" > report.md
+          cat logs/scores_table_html.txt >> report.md
+          
+          cml-send-comment report.md
+
