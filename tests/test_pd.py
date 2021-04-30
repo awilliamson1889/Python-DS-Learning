@@ -2,25 +2,26 @@ import nltk
 import os.path
 import string
 import unittest
-
 from src.reader import DSReader
-
 
 try:
     nltk.find("stopwords")
 except LookupError:
     nltk.download("stopwords")
 
-dataset_dup_path = os.path.abspath("tests/datasets/test_dataset_1_dup.csv")
-dataset_punctuation_marks = os.path.abspath(
-    "tests/datasets/test_dataset_punctuation_marks.csv")
+try:
+    nltk.find("punkt")
+except LookupError:
+    nltk.download('punkt')
+
+dataset_punctuation_marks = os.path.abspath("tests/datasets/test_dataset_punctuation_marks.csv")
+dataset_stopwords = os.path.abspath("tests/datasets/test_dataset_1_stop_words.csv")
 dataset_capital = os.path.abspath("tests/datasets/test_dataset_CAPITAL.csv")
 dataset_digits = os.path.abspath("tests/datasets/test_dataset_1_digits.csv")
-dataset_stopwords = os.path.abspath("tests/datasets/test_dataset_1_stop_words.csv")
+dataset_dup_path = os.path.abspath("tests/datasets/test_dataset_1_dup.csv")
 
 
 class TestDatasetReaderPandas(unittest.TestCase):
-
     def test_reader__remove_duplicates(self):
         """Check whether remove_duplicates method removes duplicates
         from dataset based on the email column."""
@@ -77,7 +78,6 @@ class TestDatasetReaderPandas(unittest.TestCase):
         reader.remove_punctuation_marks()
         for i, row in reader.dataset.iterrows():
             for word in row['email'].split(' '):
-                # self.assertEqual(word not in string.punctuation, True)
                 self.assertEqual(
                     all([mark not in word for mark in string.punctuation]),
                     True
